@@ -15,6 +15,7 @@ double ComplexNorm(Complex &z);
 bool ComplexNormComp(Complex &z1, Complex &z2);
 //Complex* VectorSum(Complex *z1, Complex *z2);
 void printComplex(Complex &z);
+void printVectorComplex(std::vector<Complex> &z);
 
 void complexVecSum(std::vector<Complex> &z1, std::vector<Complex> &z2);
 void complexVecSumPar(std::vector<Complex> &z1, std::vector<Complex> &z2, int Threads);
@@ -23,5 +24,5 @@ void complexVecSumSimdPar(std::vector<Complex> &z1, std::vector<Complex> &z2, in
 
 void complexVecMul(std::vector<Complex> &z1, std::vector<Complex> &z2);
 void complexVecMulSimd(std::vector<Complex> &z1, std::vector<Complex> &z2);
-
+void complexVecMulPar(std::vector<Complex> &z1, std::vector<Complex> &z2, int Threads);
 void complexVecMulSimdPar(std::vector<Complex> &z1, std::vector<Complex> &z2, int Threads);

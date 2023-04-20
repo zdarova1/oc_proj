@@ -9,19 +9,19 @@
 
 
 int main(int argc, char** argv){
-    long long size, threads_number;
-    
+    int size, threads_number;
     if(argc < 4){
         printf("Use: ./main  < func_name > < vector size > < threads> to run\n");
         return 1;
     }
-
+    srand(time(0));
     double prog_start = omp_get_wtime(), start = omp_get_wtime();
     std::string func_name(argv[1]);
     size = std::stoi(std::string(argv[2]));
     threads_number = std::stoi(std::string(argv[3]));
     
-    std::vector<Complex> v_z(size), v_t(size); 
+    std::vector<Complex> v_z(size);
+    std::vector<Complex> v_t(size); 
     omp_set_nested(1);
     omp_set_num_threads(size);
     omp_set_dynamic(size);
@@ -29,6 +29,10 @@ int main(int argc, char** argv){
     genvecComplex(v_z);
     genvecComplex(v_t);
     
+    //printVectorComplex(v_z);
+    //printVectorComplex(v_t);
+    
+
     if(func_name == "SeqMergeSort"){
         start = omp_get_wtime();
         SeqMergeSort(0, size, v_z);
@@ -52,13 +56,11 @@ int main(int argc, char** argv){
     }
     else if(func_name == "complexVecSum"){
         start = omp_get_wtime();
-        //ParMergeSort3(0, size, threads_number, v_z);
         complexVecSum(v_z, v_t);
         printf("Executing time: %6.4lf", omp_get_wtime() - start);
     }
     else if(func_name == "complexVecSumPar"){
         start = omp_get_wtime();
-        //ParMergeSort3(0, size, threads_number, v_z);
         complexVecSumPar(v_z, v_t, threads_number);
         printf("Executing time: %6.4lf", omp_get_wtime() - start);
     }
@@ -67,18 +69,15 @@ int main(int argc, char** argv){
         
         start = omp_get_wtime();
 
-        //ParMergeSort3(0, size, threads_number, v_z);
         complexVecSumSimd(v_z, v_t);
         printf("Executing time: %6.4lf", omp_get_wtime() - start);
-
     }
     else if(func_name == "complexVecSumSimdPar"){
         
         start = omp_get_wtime();
 
-        //ParMergeSort3(0, size, threads_number, v_z);
         complexVecSumSimdPar(v_z, v_t, threads_number);
-        printf("Executing time: %6.4lf", omp_get_wtime() - start);
+        printf("Executing time: %6.4lf\n", omp_get_wtime() - start);
 
     }
     else if(func_name == "complexVecMul"){
@@ -93,7 +92,21 @@ int main(int argc, char** argv){
         complexVecMulSimd(v_z, v_t);
         printf("Executing time: %6.4lf", omp_get_wtime() - start);
     }
+    else if(func_name == "complexVecMulSimdPar"){
+        //ParMergeSort3(0, size, threads_number, v_z);
+        start = omp_get_wtime();
+        complexVecMulSimdPar(v_z, v_t, threads_number);
+        printf("Executing time: %6.4lf\n", omp_get_wtime() - start);
+    }
+    else if(func_name == "complexVecMulPar"){
+        //ParMergeSort3(0, size, threads_number, v_z);
+        start = omp_get_wtime();
+        complexVecMulPar(v_z, v_t, threads_number);
+        printf("Executing time: %6.4lf\n", omp_get_wtime() - start);
+    }
     
+    
+    //printVectorComplex(v_z);
     
 
 

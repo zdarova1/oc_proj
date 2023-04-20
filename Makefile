@@ -1,5 +1,5 @@
 main: complex.o main.cpp sort.o
-	g++ main.cpp complex.o  sort.o -o main -fopenmp -mavx2
+	g++ main.cpp complex.o  sort.o -o main -fopenmp -mavx -O3
 
 
 complex.o : complex.cpp
