@@ -1,9 +1,9 @@
 import socket 
 import threading
 from encoding import EncodeFile, VerifyFile
-from ecdsa import SigningKey
+from ecdsa import SigningKey, VerifyingKey
 #параметры
-host = 'localhost'#
+host = '192.168.1.17'#
 port = 1234
 buff_size = 1024
 private_key, public_key = None, None
@@ -46,13 +46,19 @@ def recieveData(client):
             elif s[0] == 'use_key': #use_file <path>
                 f = client.recv(buff_size)
                 private_key = SigningKey.from_pem(f)
-                verify_key = private_key.verifying_key
+                #verify_key = private_key.verifying_key
                 #private_key = useKey(s[1])
                 #verify_key = private_key.verifying_key
+            elif s[0] == 'use_key_pub':
+                f = client.recv(buff_size)
+                public_key = VerifyingKey.from_pem(f)
             elif s[0] == 'encode_file':#encode_file <path>
                 EncodeFile(s[1], private_key)
+                sendFile(client, s[1])
             elif s[0] == 'verify_sign':#verify_sign <source file> <signed file>
-                print(VerifyFile(s[1], s[2], verify_key))
+                res = (VerifyFile(s[1], s[2], public_key))
+                print(str(res))
+                client.send(str(res).encode())
             elif s[0] == 'send_encode_file':
                 recieveFile(client, s[1])
                 EncodeFile(s[1], private_key)
